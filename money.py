@@ -27,7 +27,10 @@ class Currency:
         """
         Should return the currency code, or code with symbol in parentheses.
         """
-        return str(self.code, self.symbol)
+        if self.symbol:
+            return f"{self.code} ({self.symbol})"
+        else:
+            return f"{self.code}"
 
     def __eq__(self, other):
         """
@@ -56,9 +59,11 @@ class Money:
         """
         Should use the currency symbol if available, else use the code.
         Use the currency digits to determine number of digits to show.
-        """
-        money = ('$' + self.code, self.amount, self.digits, self.currency)
-        # should I use .format instead of self.digits??
+        """ 
+        if self.currency.symbol:
+            return f"{self.currency.symbol}{self.amount:.{self.currency.digits}f}"
+        else:
+            return f"{self.currency.code} {self.amount:.{self.currency.digits}f}"
 
     def __repr__(self):
         return f"<Money {str(self)}>"
@@ -76,22 +81,26 @@ class Money:
         Add two money objects of the same currency. If they have different
         currencies, raise a DifferentCurrencyError.
         """
-        s1 = self.currency
-        s2 = self.currency 
-        add = (s1 + s2)
-            if s1 !== s2 
-                return DifferentCurrencyError
+        if self.currency == other.currency:
+            s1 = self.amount 
+            s2 = other.amount
+            sum = Money(s1+s2, self.currency)
+            return sum 
+        else: 
+            return DifferentCurrencyError
 
     def sub(self, other):
         """
         Subtract two money objects of the same currency. If they have different
         currencies, raise a DifferentCurrencyError.
         """
-        m1 = self.currency
-        m2 = self.currency
-        subtract = (m1 - m2)
-            if m1 !== m2
-                return DifferentCurrencyError
+        if self.currency == other.currency:
+            m1 = self.currency
+            m2 = other.currency
+            sum = Money(m1-m2, self.currency)
+            return sum 
+        else: 
+            return DifferentCurrencyError
 
 
     def mul(self, multiplier):
@@ -100,7 +109,7 @@ class Money:
         """
         y = float
         newMoney= self.money * y 
-            return newMoney
+        return newMoney
 
     def div(self, divisor):
         """
@@ -108,4 +117,4 @@ class Money:
         """
         x = float 
         dividedMoney = self.money / x 
-            return dividedMoney
+        return dividedMoney
