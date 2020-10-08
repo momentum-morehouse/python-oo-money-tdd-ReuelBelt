@@ -94,9 +94,9 @@ class Money:
         Subtract two money objects of the same currency. If they have different
         currencies, raise a DifferentCurrencyError.
         """
-        if self.currency == other.currency:
-            m1 = self.currency
-            m2 = other.currency
+       if self.currency == other.currency:
+            m1 = self.amount 
+            m2 = other.amount
             sum = Money(m1-m2, self.currency)
             return sum 
         else: 
